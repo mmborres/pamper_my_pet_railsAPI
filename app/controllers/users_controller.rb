@@ -1,5 +1,4 @@
 class UsersController < ApplicationController
-  before_action :check_for_admin, :only => [:index]
 
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
@@ -71,6 +70,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:name, :dob, :email, :password_digest)
+      params.require(:user).permit(:name, :dob, :email, :password_digest, :admin)
     end
 end
