@@ -13,7 +13,7 @@
 #
 
 class User < ApplicationRecord
-  has_many :order_items
   has_secure_password
+  has_many :order_items
   validates :email, :presence => true, :uniqueness => true
 end
