@@ -3,7 +3,15 @@ require 'jwt'
 class JsonWebToken
   # Encodes and signs JWT Payload with expiration
   def self.encode(payload)
+    logger = ActiveSupport::Logger.new(STDOUT)
+
     payload.reverse_merge!(meta)
+    
+    logger.info "==========================encode"
+    logger.info JWT
+    logger.info payload
+    logger.info Rails.application.secrets.secret_key_base
+
     JWT.encode(payload, Rails.application.secrets.secret_key_base)
   end
 

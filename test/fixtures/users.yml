@@ -2,14 +2,17 @@
 #
 # Table name: users
 #
-#  id              :bigint(8)        not null, primary key
-#  name            :text
-#  dob             :date
-#  email           :text
-#  password_digest :text
-#  admin           :boolean
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
+#  id                   :bigint(8)        not null, primary key
+#  name                 :text
+#  dob                  :date
+#  email                :text
+#  password_digest      :text
+#  admin                :boolean
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  confirmation_token   :text
+#  confirmed_at         :datetime
+#  confirmation_sent_at :datetime
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
