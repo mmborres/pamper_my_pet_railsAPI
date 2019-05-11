@@ -1,6 +1,47 @@
 class UsersController < ApplicationController
 
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  def create
+    logger.info "============== ============ CREATE ============== ============"
+    logger.info params
+    logger.info params[:password]
+    #logger.info user_params
+    user = User.new(email: params[:email], password: params[:password], password_confirmation: params[:password_confirmation])
+    user.update(:admin => false)
+  
+    if user.save
+      render json: {status: 'User created successfully', user_id: user.id, admin: user.admin}, status: :created
+    else
+      render json: { errors: user.errors.full_messages }, status: :bad_request
+    end
+  end
+
+
+  def login
+    logger.info "============== ============ LOGIN ============== ============"
+    logger.info params
+    logger.info params[:email]
+    logger.info params[:password]
+
+    user = User.find_by(email: params[:email].to_s.downcase)
+  
+    if user && user.authenticate(params[:password])
+        auth_token = JsonWebToken.encode({user_id: user.id})
+        render json: {auth_token: auth_token, user_id: user.id, admin: user.admin}, status: :ok
+        #render json: {status: 'User logged in successfully'}, status: :ok
+    else
+      render json: {error: 'Invalid username / password'}, status: :unauthorized
+    end
+  end
+
+  private
+  
+  def user_params
+    params.require(:user).permit(:email, :password, :password_confirmation)
+  end
+
+
+
+  #before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   # GET /users
   # GET /users.json
@@ -13,6 +54,7 @@ class UsersController < ApplicationController
   def show
   end
 
+=begin
   # GET /users/new
   def new
     @user = User.new
@@ -21,6 +63,7 @@ class UsersController < ApplicationController
   # GET /users/1/edit
   def edit
   end
+
 
   # POST /users
   # POST /users.json
@@ -37,6 +80,7 @@ class UsersController < ApplicationController
       end
     end
   end
+
 
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
@@ -70,6 +114,8 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:name, :dob, :email, :password_digest, :admin)
+      params.require(:user).permit(:name, :dob, :email, :password_digest, :admin, :password_confirmation, :password)
     end
+=end
+
 end
