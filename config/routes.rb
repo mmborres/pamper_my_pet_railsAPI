@@ -51,11 +51,19 @@
 #                 DELETE /users/:id(.:format)            users#destroy
 
 Rails.application.routes.draw do
-  resources :categories
-  resources :pets
-  resources :orders
-  resources :order_items
   resources :products
-  resources :users
+  resources :order_items
+  resources :orders 
+  resources :pets
+  resources :categories
+  resources :users #, only: :create, :login, :index
+
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  resources :users, only: :create do
+    collection do
+      post 'confirm'
+      post 'login'
+    end
+  end
+
 end
