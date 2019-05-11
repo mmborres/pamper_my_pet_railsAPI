@@ -11,8 +11,10 @@ class JsonWebToken
     logger.info JWT
     logger.info payload
     logger.info Rails.application.secrets.secret_key_base
+    logger.info Rails.application.credentials.secret_key_base 
 
-    JWT.encode(payload, Rails.application.secrets.secret_key_base)
+    #JWT.encode(payload, Rails.application.secrets.secret_key_base)
+    JWT.encode(payload, Rails.application.credentials.secret_key_base)
   end
 
   # Decodes the JWT with the signed secret
