@@ -12,6 +12,8 @@ class JsonWebToken
     logger.info payload
     logger.info Rails.application.secrets.secret_key_base
     logger.info Rails.application.credentials.secret_key_base 
+    logger.info ENV['SECRET_KEY_BASE']
+    logger.info ENV["SECRET_KEY_BASE"]
     #Rails.application.secrets.secret_key_base = '4bb5645010e470053d20066aeacf6640ad9a0db1e0eb4663b5a59a3c55ea0a8e05902c10b492d08ff2821e414fb31d56671e182dbe8656e273bb645c4cd4843d'
 
     #JWT.encode(payload, Rails.application.secrets.secret_key_base)
