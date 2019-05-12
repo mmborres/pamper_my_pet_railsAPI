@@ -9,7 +9,7 @@ class UsersController < ApplicationController
     user.update(:admin => false)
   
     if user.save
-      render json: {status: 'User created successfully', user_id: user.id, admin: user.admin}, status: :created
+      render json: {status: 'User created successfully', user_id: user.id, admin: user.admin, name: user.name, email: user.email }, status: :created
     else
       render json: { errors: user.errors.full_messages }, status: :bad_request
     end
@@ -26,7 +26,7 @@ class UsersController < ApplicationController
   
     if user && user.authenticate(params[:password])
         auth_token = JsonWebToken.encode({user_id: user.id})
-        render json: {auth_token: auth_token, user_id: user.id, admin: user.admin}, status: :ok
+        render json: {auth_token: auth_token, user_id: user.id, admin: user.admin, name: user.name, email: user.email }, status: :ok
         #render json: {status: 'User logged in successfully'}, status: :ok
     else
       render json: {error: 'Invalid username / password'}, status: :unauthorized
