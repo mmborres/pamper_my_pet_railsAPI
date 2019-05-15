@@ -9,7 +9,7 @@ class JsonWebToken
     
     logger.info "==========================encode"
     logger.info JWT
-    #logger.info payload
+    logger.info payload
     #logger.info Rails.application.secrets.secret_key_base
     #logger.info ENV['SECRET_KEY_BASE']
     #logger.info ENV["SECRET_KEY_BASE"]

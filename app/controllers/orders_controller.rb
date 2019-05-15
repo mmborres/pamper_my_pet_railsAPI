@@ -1,5 +1,8 @@
 class OrdersController < ApplicationController
   before_action :set_order, only: [:show, :edit, :update, :destroy]
+  protect_from_forgery
+  skip_before_action :verify_authenticity_token
+
 
   # GET /orders
   # GET /orders.json
@@ -35,6 +38,68 @@ class OrdersController < ApplicationController
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def charge
+    logger.info "============== ============ charge ============== ============"
+    logger.info params
+    logger.info params[:token]
+    logger.info params[:user_id]
+    logger.info params[:order_id]
+    logger.info params[:email]
+
+    order = Order.find params[:order_id]
+    if order != nil
+      logger.info order
+    end
+    
+    #Stripe.api_key = Rails.configuration.stripe[:secret_key]
+
+    #Stripe.api_key = "sk_test_wHMjQkNK1tkb4hrEJV1uDAFN00QoBprMuU"
+    #"sk_test_4eC39HqLyjWDarjtT1zdp7dc" #"pk_test_TYooMQauvdEDq54NiTphI7jx"
+    
+    
+    #Publishable pk_test_ityX5pdAjy1Pafnmggi18tND00HSzcZ6uS
+    #Secret sk_test_wHMjQkNK1tkb4hrEJV1uDAFN00QoBprMuU
+    
+    # Amount in cents
+    #@amount = 50
+
+    #customer = Stripe::Customer.create({
+      #email: params[:email],
+      #source: params[:token],
+      #email: params[:stripeEmail],
+      #source: params[:stripeToken],
+    #})
+
+    #charge = Stripe::Charge.create({
+      #customer: customer.id,
+      #amount: @amount,
+      #description: 'Rails Stripe customer',
+      #currency: 'usd',
+    #})
+
+
+    #stripecharge = Stripe::Charge.create(
+      #:customer    => params[:email],
+      #:source        => params[:token],
+      #:amount      => 200, #params[:amount],
+      #:description => 'Rails Stripe customer',
+      #:currency    => 'usd',
+      #:pm_card_bypassPending => true
+      #:cvc_check   => fail
+    #)
+
+    render json: {status: 'Payment Successful'} #, status: :ok
+
+    # If in test mode, you can stick this here to inspect `charge` 
+    # as long as you've imported byebug in your Gemfile
+    #byebug
+
+    #respond_to do |format|
+    #  format.json  { render :json => charge }
+    #  format.html  { render :template => "charges/create"}
+    #end
   end
 
   # PATCH/PUT /orders/1

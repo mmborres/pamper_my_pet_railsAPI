@@ -7,6 +7,7 @@ class UsersController < ApplicationController
     #logger.info user_params
     user = User.new(email: params[:email], password: params[:password], password_confirmation: params[:password_confirmation])
     user.update(:admin => false)
+    user.update(:name => params[:name])
   
     if user.save
       render json: {status: 'User created successfully', user_id: user.id, admin: user.admin, name: user.name, email: user.email }, status: :created

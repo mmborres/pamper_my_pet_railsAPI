@@ -3,3 +3,9 @@
 <%= render 'form', order: @order %>
 
 <%= link_to 'Back', orders_path %>
+
+<script src="https://checkout.stripe.com/v2/checkout.js"
+    class="stripe-button"
+    data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
+    data-description=""
+    data-amount="50"></script>

@@ -66,4 +66,10 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :orders do
+    collection do
+      post 'charge'
+    end
+  end  
+
 end
