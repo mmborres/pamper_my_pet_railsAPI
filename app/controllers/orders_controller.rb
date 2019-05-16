@@ -1,7 +1,9 @@
 class OrdersController < ApplicationController
   before_action :set_order, only: [:show, :edit, :update, :destroy]
+  #skip_before_action :verify_authenticity_token
+  rescue_from Stripe::CardError, with: :catch_exception
   protect_from_forgery
-  skip_before_action :verify_authenticity_token
+  require 'stripe'
 
 
   # GET /orders
@@ -43,14 +45,47 @@ class OrdersController < ApplicationController
   def charge
     logger.info "============== ============ charge ============== ============"
     logger.info params
-    logger.info params[:token]
+    logger.info params[:stripeToken]
     logger.info params[:user_id]
     logger.info params[:order_id]
-    logger.info params[:email]
+    logger.info params[:stripeEmail]
+
+    current_user = User.find params[:user_id]
 
     order = Order.find params[:order_id]
     if order != nil
       logger.info order
+    end
+
+    customer = nil
+
+    begin
+      customer = Stripe::Customer.create(
+        email: params[:stripeEmail],
+        source: params[:stripeToken]
+      )
+
+      logger.info customer
+    rescue Stripe::StripeError 
+    end
+
+    #begin
+    #  StripeChargesServices.new( charges_params, current_user).call
+    #rescue Stripe::StripeError 
+    #end
+
+    begin
+      if (customer != nil)
+        charge = Stripe::Charge.create({
+          customer: customer.id,
+          amount: 10,
+          description: 'Rails Stripe customer',
+          currency: 'usd',
+        })
+
+        logger.info charge
+      end
+    rescue Stripe::StripeError 
     end
     
     #Stripe.api_key = Rails.configuration.stripe[:secret_key]
@@ -91,15 +126,19 @@ class OrdersController < ApplicationController
     #)
 
     render json: {status: 'Payment Successful'} #, status: :ok
-
+    
     # If in test mode, you can stick this here to inspect `charge` 
     # as long as you've imported byebug in your Gemfile
     #byebug
 
     #respond_to do |format|
-    #  format.json  { render :json => charge }
-    #  format.html  { render :template => "charges/create"}
+      #format.json  { render :json => charge }
+      #format.html  { render :template => "charges/create"}
     #end
+
+    def charges_params
+      params.permit(:stripeEmail, :stripeToken, :order_id)
+    end
   end
 
   # PATCH/PUT /orders/1
