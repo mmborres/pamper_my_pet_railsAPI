@@ -164,7 +164,7 @@ class OrdersController < ApplicationController
     logger.info params[:stripeEmail]
 
     current_user = User.find params[:user_id]
-    order = Order.find_by(user_id: userid, status: 'Open')
+    order = Order.find_by(user_id: current_user.id, status: 'Open')
 
     #order = Order.find params[:order_id]
     if order != nil
