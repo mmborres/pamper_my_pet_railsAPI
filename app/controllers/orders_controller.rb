@@ -55,7 +55,8 @@ class OrdersController < ApplicationController
         i += 1
       end
     end
-    logger.info "quantity = " + quantity
+    logger.info "quantity = "
+    logger.info quantity
     render json: {data: quantity}
   end
 
