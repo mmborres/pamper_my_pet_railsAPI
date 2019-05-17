@@ -44,7 +44,8 @@ class OrdersController < ApplicationController
     orderitems = getItems params[:user_id]
     if orderitems.length > 0 
       product = Product.find params[:product_id]
-      logger.info ("HERE =====  ===== ==== ======= ====== = = =  =" + product)
+      logger.info "HERE =====  ===== ==== ======= ====== = = =  =" 
+      logger.info product.id
       i = 0;
       until i == orderitems.length
         if (orderitems[i].product_id == product.id)
