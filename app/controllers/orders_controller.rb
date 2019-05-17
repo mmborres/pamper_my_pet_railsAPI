@@ -87,12 +87,12 @@ class OrdersController < ApplicationController
         logger.info "her2"
 
         cartitem = {
-          id => product.id,
-          name => product.name,
-          image => product.image,
-          price => product.price,
-          quantity => orderitems[i].quantity,
-          order_item_id => orderitems[i].id
+          :id => product.id,
+          :name => product.name,
+          :image => product.image,
+          :price => product.price,
+          :quantity => orderitems[i].quantity,
+          :order_item_id => orderitems[i].id
         }
 
         logger.info "her3"
