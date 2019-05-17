@@ -39,16 +39,17 @@ class OrdersController < ApplicationController
   #API Endpoint
   def getOrderItemQuantity #input is user_id, product_id
     logger.info "===================== getOrderItemQuantity =========="
+    logger.info params
     quantity = 0
     orderitems = getItems params[:user_id]
     if orderitems.length > 0 
-      p = params[:product_id].to_i
-      logger.info ("p=" + p)
+      p = params[:product_id]
+      logger.info ("HERE =====  ===== ==== ======= ====== = = =  =" + p)
       i = 0;
       until i == orderitems.length
-        logger.info orderitems[i].product_id.to_i
         logger.info orderitems[i].product_id
-        if (orderitems[i].product_id.to_i == p)
+        logger.info orderitems[i].product_id
+        if (orderitems[i].product_id == p)
           quantity = orderitems[i].quantity
           #return 
         end
