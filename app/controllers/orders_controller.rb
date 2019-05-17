@@ -59,8 +59,8 @@ class OrdersController < ApplicationController
   end
 
   #API Endpoint
-  def getOpenOrder
-    order = Order.find_by(user_id: userid, status: 'Open')
+  def getOpenOrder 
+    order = Order.find_by(user_id: params[:user_id], status: 'Open')
     render json: {data: order}
   end
 
