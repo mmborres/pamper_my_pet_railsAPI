@@ -36,6 +36,24 @@ class OrdersController < ApplicationController
   end
 =end
 
+  #API Endpoint
+  def getOrderItemQuantity #input is user_id, product_id
+    quantity = 0
+    orderitems = getItems params[:user_id]
+    if orderitems.length > 0 
+      p = params[:product_id].to_i
+      i = 0;
+      until i == orderitems.length
+        if (orderitems[i].product_id.to_i == p)
+          quantity = orderitems[i].quantity
+          return 
+        end
+        i += 1
+      end
+    end
+    render json: {data: quantity}
+  end
+
   def getItems (userid)
     orderitems = []
     order = Order.find_by(user_id: userid, status: 'Open')

@@ -72,6 +72,7 @@ Rails.application.routes.draw do
       post 'getOrderItems'
       post 'getCart'
       post 'getCartItemCount'
+      post 'getOrderItemQuantity'
     end
   end  
 
