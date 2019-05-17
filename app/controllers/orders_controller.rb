@@ -160,12 +160,13 @@ class OrdersController < ApplicationController
     logger.info params
     logger.info params[:stripeToken]
     logger.info params[:user_id]
-    logger.info params[:order_id]
+    #logger.info params[:order_id]
     logger.info params[:stripeEmail]
 
     current_user = User.find params[:user_id]
+    order = Order.find_by(user_id: userid, status: 'Open')
 
-    order = Order.find params[:order_id]
+    #order = Order.find params[:order_id]
     if order != nil
       logger.info order
     end
