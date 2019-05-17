@@ -43,13 +43,11 @@ class OrdersController < ApplicationController
     quantity = 0
     orderitems = getItems params[:user_id]
     if orderitems.length > 0 
-      p = params[:product_id]
-      logger.info ("HERE =====  ===== ==== ======= ====== = = =  =" + p)
+      product = Product.find params[:product_id]
+      logger.info ("HERE =====  ===== ==== ======= ====== = = =  =" + product)
       i = 0;
       until i == orderitems.length
-        logger.info orderitems[i].product_id
-        logger.info orderitems[i].product_id
-        if (orderitems[i].product_id == p)
+        if (orderitems[i].product_id == product.id)
           quantity = orderitems[i].quantity
           #return 
         end
