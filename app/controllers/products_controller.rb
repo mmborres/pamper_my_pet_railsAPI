@@ -73,7 +73,18 @@ class ProductsController < ApplicationController
     if ( pet_type != nil && classification != nil )
       #User.where("name = :name and email = :email", { name: "Joe", email: "joe@example.com" })
       #Person.find(:all, :offset => 10, :limit => 10)
-      products = Product.where(:pet_type => pet_type, :classification => classification).order(:name)
+      if ( pet_type == "" && classification == "" ) #both not specfied
+        products = Product.all
+      else
+        if ( pet_type == "" && classification != "" ) #pet type not specified
+          products = Product.where(:classification => classification).order(:name)
+        elsif ( pet_type != "" && classification == "" ) #classification not specified
+          products = Product.where(:pet_type => pet_type).order(:name)
+        else #get filtered
+          products = Product.where(:pet_type => pet_type, :classification => classification).order(:name)
+        end
+      end
+
       logger.info "filtered products1"
       #products = Product.where(:pet_type => pet_type, :classification => classification)
       #logger.info "filtered products2"
