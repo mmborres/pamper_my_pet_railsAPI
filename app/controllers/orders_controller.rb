@@ -58,6 +58,12 @@ class OrdersController < ApplicationController
     render json: {data: quantity}
   end
 
+  #API Endpoint
+  def getOpenOrder
+    order = Order.find_by(user_id: userid, status: 'Open')
+    render json: {data: order}
+  end
+
   def getItems (userid)
     orderitems = []
     order = Order.find_by(user_id: userid, status: 'Open')
@@ -109,6 +115,28 @@ class OrdersController < ApplicationController
   def getCartItemCount #input is user_id
     orderitems = getItems params[:user_id]
     render json: {data: orderitems.length}
+  end
+
+  #  stock          :integer
+  def updateStocks #input is user_id
+    logger.info "============ updateStocks ============"
+    orderitems = getItems params[:user_id]
+    logger.info orderitems
+    if (orderitems.length > 0)
+      i = 0;
+      until i == orderitems.length
+        product = Product.find orderitems[i].product_id
+        newstock = product.stock - orderitems[i].quantity
+        product.update(:stock => newstock);
+
+        i += 1
+      end
+    end
+
+    order = Order.find_by(user_id: userid, status: 'Open')
+    order.update(:status => 'Completed');
+
+    render json: {data: 'Update Stocks Completed. Order Completed'}
   end
   
   # POST /orders

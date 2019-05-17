@@ -73,6 +73,8 @@ Rails.application.routes.draw do
       post 'getCart'
       post 'getCartItemCount'
       post 'getOrderItemQuantity'
+      post 'updateStocks'
+      post 'getOpenOrder'
     end
   end  
 
