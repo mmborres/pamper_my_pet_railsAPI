@@ -75,12 +75,16 @@ class OrdersController < ApplicationController
 
   #API Endpoint
   def getCart #input is user_id
+    logger.info "getCart"
     cart = []
     orderitems = getItems params[:user_id]
-    if orderitems.length > 0 
+    logger.info orderitems
+    if (orderitems.length > 0)
+      logger.info "here"
       i = 0;
       until i == orderitems.length
         product = Product.find orderitems[i].product_id
+        logger.info "her2"
 
         cartitem = {
           id => product.id,
@@ -90,11 +94,14 @@ class OrdersController < ApplicationController
           quantity => orderitems[i].quantity,
           order_item_id => orderitems[i].id
         }
+
+        logger.info "her3"
         cart.append cartitem
 
         i += 1
       end
     end
+    logger.info cart
     render json: {data: cart}
   end
 
