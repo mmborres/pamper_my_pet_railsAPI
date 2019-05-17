@@ -64,6 +64,7 @@ class ProductsController < ApplicationController
   def search
     classification = params[:classification]
     pet_type = params[:pet_type]
+    logger.info "SEARCH PRODUCTS ==========================================================================="
     logger.info classification
     logger.info pet_type
 
