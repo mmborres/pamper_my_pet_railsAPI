@@ -133,7 +133,7 @@ class OrdersController < ApplicationController
       end
     end
 
-    order = Order.find_by(user_id: userid, status: 'Open')
+    order = Order.find_by(user_id: params[:user_id], status: 'Open')
     order.update(:status => 'Completed');
 
     render json: {data: 'Update Stocks Completed. Order Completed'}
