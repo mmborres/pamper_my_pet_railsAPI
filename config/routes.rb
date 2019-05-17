@@ -69,7 +69,16 @@ Rails.application.routes.draw do
   resources :orders do
     collection do
       post 'charge'
+      post 'getOrderItems'
+      post 'getCart'
+      post 'getCartItemCount'
     end
   end  
+
+  resources :products do
+    collection do
+      post 'search'
+    end
+  end 
 
 end

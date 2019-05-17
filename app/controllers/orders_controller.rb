@@ -26,6 +26,62 @@ class OrdersController < ApplicationController
   def edit
   end
 
+=begin
+  def getOrderItemsGivenOrderID (orid) #, userid)
+    #products = Product.where(:pet_type => pet_type, :classification => classification).order(:name)
+    #order = Order.find_by(order_d: orid, user_id: userid, status: 'Open')
+    orderitems = OrderItem.where(:order_id => orid)
+    logger.info orderitems
+    return orderitems
+  end
+=end
+
+  def getItems (userid)
+    orderitems = []
+    order = Order.find_by(user_id: userid, status: 'Open')
+    if (order != nil)
+      orderitems = OrderItem.where(:order_id => order.id)
+    end
+    return orderitems
+  end
+
+  #API Endpoint
+  def getOrderItems #input is user_id
+    orderitems = getItems params[:user_id]
+    render json: {data: orderitems}
+  end
+
+  #API Endpoint
+  def getCart #input is user_id
+    cart = []
+    orderitems = getItems params[:user_id]
+    if orderitems.length > 0 
+      i = 0;
+      until i == orderitems.length
+        product = Product.find orderitems[i].product_id
+
+        cartitem = {
+          id => product.id,
+          name => product.name,
+          image => product.image,
+          price => product.price,
+          quantity => orderitems[i].quantity,
+          order_item_id => orderitems[i].id
+        }
+        cart.append cartitem
+
+        i += 1
+      end
+    end
+    render json: {data: cart}
+  end
+
+  #API Endpoint
+  def getCartItemCount #input is user_id
+    orderitems = getItems params[:user_id]
+    render json: {data: orderitems.length}
+  end
+  
   # POST /orders
   # POST /orders.json
   def create

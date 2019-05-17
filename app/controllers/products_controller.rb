@@ -61,6 +61,28 @@ class ProductsController < ApplicationController
     end
   end
 
+  def search
+    classification = params[:classification]
+    pet_type = params[:pet_type]
+    logger.info classification
+    logger.info pet_type
+
+    products = []
+
+    if ( pet_type != nil && classification != nil )
+      #User.where("name = :name and email = :email", { name: "Joe", email: "joe@example.com" })
+      #Person.find(:all, :offset => 10, :limit => 10)
+      products = Product.where(:pet_type => pet_type, :classification => classification).order(:name)
+      logger.info "filtered products1"
+      #products = Product.where(:pet_type => pet_type, :classification => classification)
+      #logger.info "filtered products2"
+      logger.info products
+    end
+
+    render json: {data: products}
+  end
+
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_product
