@@ -75,6 +75,7 @@ Rails.application.routes.draw do
       post 'getOrderItemQuantity'
       post 'updateStocks'
       post 'getOpenOrder'
+      post 'getOrderHistory'
     end
   end  
 

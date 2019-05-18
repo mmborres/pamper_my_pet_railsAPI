@@ -140,6 +140,12 @@ class OrdersController < ApplicationController
 
     render json: {data: 'Update Stocks Completed. Order Completed'}
   end
+
+  #API Endpoint
+  def getOrderHistory
+    orders = Order.where(:user_id => params[:user_id])
+    render json: {data: orders}
+  end
   
   # POST /orders
   # POST /orders.json
