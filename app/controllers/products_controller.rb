@@ -74,7 +74,7 @@ class ProductsController < ApplicationController
       #User.where("name = :name and email = :email", { name: "Joe", email: "joe@example.com" })
       #Person.find(:all, :offset => 10, :limit => 10)
       if ( pet_type == "" && classification == "" ) #both not specfied
-        products = Product.all
+        products = Product.all.order(:name)
       else
         if ( pet_type == "" && classification != "" ) #pet type not specified
           products = Product.where(:classification => classification).order(:name)
